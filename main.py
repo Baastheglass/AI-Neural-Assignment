@@ -30,3 +30,21 @@ mlpmodel.fit(x_train_flatten, y_train, epochs=5)
 print("Evaluating Multi Layer Perceptron: ")
 mlpmodel.evaluate(x_test_flatten, y_test)
 
+#iii)
+model = keras.Sequential([
+    keras.layers.Conv2D(32, (3,3), activation='relu', padding='same', input_shape=(28, 28, 1)),
+    keras.layers.MaxPooling2D((2,2)),
+    
+    keras.layers.Conv2D(64, (3,3), activation='relu', padding='same'),
+    keras.layers.MaxPooling2D((2,2)),
+
+    keras.layers.Flatten(),
+    keras.layers.Dense(128, activation='relu'),
+    keras.layers.Dropout(0.5),
+    keras.layers.Dense(10, activation='softmax')  # 10 classes for digits 0-9
+])
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+history = model.fit(x_train, y_train, epochs=10, validation_data=(x_test, y_test), batch_size=64)
+test_loss, test_acc = model.evaluate(x_test, y_test, verbose=1)
+print(f"Test accuracy: {test_acc:.4f}")
+
